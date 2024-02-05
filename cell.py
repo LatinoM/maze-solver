@@ -41,6 +41,14 @@ class Cell():
         x = ((self.__x2 - self.__x1) // 2) + self.__x1
         y = ((self.__y2 - self.__y1) // 2) + self.__y1
         return Point(x, y)
+    
+    def set_top_left(self, x, y):
+        self.__x1 = x
+        self.__y1 = y
+
+    def set_bottom_right(self, x, y):
+        self.__x2 = x
+        self.__y2 = y
 
         
         
