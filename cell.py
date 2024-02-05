@@ -3,7 +3,7 @@ from point import Point
 from line import Line
 
 class Cell():
-    def __init__(self, x1, y1, x2, y2, window, left=True, right=True, top=True, bottom=True):
+    def __init__(self, x1, y1, x2, y2, window=None, left=True, right=True, top=True, bottom=True):
         self.has_left_wall = left
         self.has_right_wall = right
         self.has_top_wall = top
@@ -15,6 +15,9 @@ class Cell():
         self.__win = window
 
     def draw(self):
+        if self.__win is None:
+            return
+        
         if self.has_left_wall:
             self.__win.draw_line(Line(Point(self.__x1, self.__y1), Point(self.__x1, self.__y2)), "green")
             
@@ -28,6 +31,8 @@ class Cell():
             self.__win.draw_line(Line(Point(self.__x1, self.__y2), Point(self.__x2, self.__y2)), "green")
 
     def draw_move(self, to_cell, undo=False):
+        if self.__win is None:
+            return
         color = ""
         if undo:
             color = "gray"
