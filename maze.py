@@ -28,6 +28,7 @@ class Maze():
             raise IndexError("maze size is zero")
         self._break_entrance_and_exit()
         self._break_walls_r(0, 0)
+        self._reset_cells_visited()
 
     def _create_cells(self):
         for i in range(self.num_rows):
@@ -125,6 +126,11 @@ class Maze():
         if not self._cells[i][j].visited:
             output.append((i, j))
         return output
+    
+    def _reset_cells_visited(self):
+        for i in range(self.num_rows):
+            for j in range(self.num_cols):
+                self._cells[i][j].visited = False
         
 
 
