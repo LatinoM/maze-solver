@@ -1,5 +1,6 @@
-from line_helper import get_line
 from window import Window
+from point import Point
+from line import Line
 
 class Cell():
     def __init__(self, x1, y1, x2, y2, window, left=True, right=True, top=True, bottom=True):
@@ -15,16 +16,31 @@ class Cell():
 
     def draw(self):
         if self.has_left_wall:
-            self.__win.draw_line(get_line(self.__x1, self.__y1, self.__x1, self.__y2), "green")
+            self.__win.draw_line(Line(Point(self.__x1, self.__y1), Point(self.__x1, self.__y2)), "green")
             
         if self.has_right_wall:
-            self.__win.draw_line(get_line(self.__x2, self.__y1, self.__x2, self.__y2), "green")
+            self.__win.draw_line(Line(Point(self.__x2, self.__y1), Point(self.__x2, self.__y2)), "green")
 
         if self.has_top_wall:
-            self.__win.draw_line(get_line(self.__x1, self.__y1, self.__x2, self.__y1), "green")
+            self.__win.draw_line(Line(Point(self.__x1, self.__y1), Point(self.__x2, self.__y1)), "green")
 
         if self.has_bottom_wall:
-            self.__win.draw_line(get_line(self.__x1, self.__y2, self.__x2, self.__y2), "green")
+            self.__win.draw_line(Line(Point(self.__x1, self.__y2), Point(self.__x2, self.__y2)), "green")
+
+    def draw_move(self, to_cell, undo=False):
+        color = ""
+        if undo:
+            color = "gray"
+        else:
+            color = "red"
+
+        self.__win.draw_line(Line(self.get_center(), to_cell.get_center()), color)
+
+    def get_center(self):
+        # Returns point representing center
+        x = ((self.__x2 - self.__x1) // 2) + self.__x1
+        y = ((self.__y2 - self.__y1) // 2) + self.__y1
+        return Point(x, y)
 
         
         
