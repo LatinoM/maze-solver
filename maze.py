@@ -20,6 +20,9 @@ class Maze():
         self._win = win
         self._cells = []
         self._create_cells()
+        if len(self._cells)==0:
+            raise IndexError("maze size is zero")
+        self._break_entrance_and_exit()
 
     def _create_cells(self):
         for i in range(self.num_rows):
@@ -50,5 +53,19 @@ class Maze():
             return
         self._win.redraw()
         time.sleep(0.05)
+
+    def _break_entrance_and_exit(self):
+        start_cell = self._cells[0][0] 
+        end_cell = self._cells[-1][-1]
+        start_cell.has_left_wall = False
+        start_cell.has_right_wall = False
+        start_cell.has_top_wall = False
+        start_cell.has_bottom_wall = False
+        start_cell.draw()
+        end_cell.has_left_wall = False
+        end_cell.has_right_wall = False
+        end_cell.has_top_wall = False
+        end_cell.has_bottom_wall = False
+        end_cell.draw()
 
         
