@@ -27,9 +27,7 @@ class Maze():
         if len(self._cells)==0:
             raise IndexError("maze size is zero")
         self._break_entrance_and_exit()
-        start_i = random.choice(range(self.num_rows))
-        start_j = random.choice(range(self.num_cols))
-        self._break_walls_r(start_i, start_j)
+        self._break_walls_r(0, 0)
 
     def _create_cells(self):
         for i in range(self.num_rows):
@@ -83,35 +81,50 @@ class Maze():
             if len(to_visit) == 0:
                 current_cell.draw()
                 return
+            # otherwise, Pick a random neighbour
             next_cell_coords = random.choice(to_visit)
             next_cell = self._cells[next_cell_coords[0]][next_cell_coords[1]]
+
+            # break down the walls between cells
             if next_cell_coords[0] < i: # above
+                #print("Moving to cell above")
                 current_cell.has_top_wall = False
                 next_cell.has_bottom_wall = False
             elif next_cell_coords[0] > i: # below
+                #print("Moving to cell below")
                 current_cell.has_bottom_wall = False
                 next_cell.has_top_wall = False
             elif next_cell_coords[1] < j: # to left
+                #print("Moving to cell to left")
                 current_cell.has_left_wall = False
                 next_cell.has_right_wall = False
             else: # to right
+                #print("Moving to cell to right")
                 current_cell.has_right_wall = False
                 next_cell.has_left_wall = False
+
+            # Move to that cell
             self._break_walls_r(next_cell_coords[0], next_cell_coords[1])
 
 
     def _get_adjacent(self, i, j):
         adjacent = []
-        for x in [-1, 1]:
-            for y in [-1, 1]:
-                after_left = j+x >= 0
-                before_right = j+x < self.num_cols
-                below_top = i+y >= 0
-                above_bottom = i+y < self.num_rows
-                if after_left and before_right and above_bottom and below_top:
-                    if not self._cells[i+y][j+x].visited:
-                        adjacent.append((i+y, j+x))
+        
+        if i-1 >= 0:
+            adjacent = self._add_if_not_visted(adjacent, i-1, j) # up
+        if i+1 < self.num_rows:
+            adjacent = self._add_if_not_visted(adjacent, i+1, j) # down
+        if j-1 >= 0:
+            adjacent = self._add_if_not_visted(adjacent, i, j-1) # left
+        if j+1 < self.num_cols:
+            adjacent = self._add_if_not_visted(adjacent, i, j+1) # right
         return adjacent
+    
+    def _add_if_not_visted(self, adjacent_list, i, j):
+        output = adjacent_list.copy()
+        if not self._cells[i][j].visited:
+            output.append((i, j))
+        return output
         
 
 
